@@ -30,6 +30,7 @@ function writeToFile(fileName, answers) {
     stringSvg += "</g>";        
     stringSvg += "</svg>";
 
+    //Write the SVG string to a file
     fs.writeFileSync(fileName, stringSvg, (err) => {
         err ? console.log(err) : console.log(`Generate ${fileName}`);
     })
