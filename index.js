@@ -1,12 +1,14 @@
-const inquirer = import('inquirer');
-// const inquirer = require("inquirer");  //Inquirer node package
+//const inquirer = require("inquirer");  //Inquirer node package
 const fs = require("fs");   //File module package
 const  {Triangle, Square, Circle} = require("./lib/shapes");  //Importing figures from shapes.js
 
 
+(async () => {
+    const inquirer = (await import('inquirer')).default;
+// Function writes the SVG file using user answers from inquirer prompts
 function writeToFile(fileName, answers) {
     let stringSvg = "";
-    stringSvg = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
+    stringSvg = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';  // Sets width and height of logo shape
     stringSvg += "<g>";
     stringSvg += `${answers.shape}`;
 
@@ -14,14 +16,24 @@ function writeToFile(fileName, answers) {
     let shapeChoice;
     if (answers.shape === "Triangle") {
         shapeChoice = new Triangle();
-        stringSvg += `<polygon points="150, 18 244, 182 56, 182" fill="${answers.shapeColor}" />`;
+        stringSvg += `<polygon points="150, 18 244, 182 56, 182" fill="${answers.shapeBackgroundColor}" />`;
     } else if (answers.shape === "Square") {
         shapeChoice = new Square();
-        stringSvg += `<rect x="73" y="40" width="160" height="160" fill="${answers.shapeColor}" />`;
+        stringSvg += `<rect x="73" y="40" width="160" height="160" fill="${answers.shapeBackgroundColor}" />`;
     } else  {
         shapeChoice = new Circle();
-        stringSvg += `<circle cx="150" cy="115" r="80" fill="${answers.shapeColor}" />`;
+        stringSvg += `<circle cx="150" cy="115" r="80" fill="${answers.shapeBackgroundColor}" />`;
     }
+
+    stringSvg += `<text x="150" y="125" font-size="40" text-anchor="middle" fill="${answers.textColor}">${answers.text}</text>`;
+    // Close the SVG tags
+    stringSvg += "</g>";        
+    stringSvg += "</svg>";
+
+    
+   
+  
+
 }
 
 
@@ -49,7 +61,7 @@ function promptUser() {
         {
             type: "input", 
             message: "Choose shapes color",
-            name: "ShapeBackgroundColor", 
+            name: "shapeBackgroundColor", 
         },
     ])
     .then ((answers) => {
@@ -57,10 +69,13 @@ function promptUser() {
             console. log("Must enter a value more than 3 characters");
             promptUser();
         } else {
-            writeToFile("./example/logo.svg", answers);
+            writeToFile("./examples/logo.svg", answers);
         }
     });
     
 }
 
 promptUser();
+
+
+})();
