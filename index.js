@@ -1,8 +1,14 @@
 const inquirer = require("inquirer");  //Inquirer node package
 const fs = require("fs");   //File module package
 const  {Triangle, Square, Circle} = require("./lib/shapes");  //Importing figures from shapes.js
-const { type } = require("os");
-const { choices } = require("yargs");
+
+
+function writeToFile(fileName, answers) {
+    let stringSvg = "";
+    stringSvg = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
+    stringSvg += "<g>";
+    stringSvg += `${answers.shape}`;
+}
 
 
 
@@ -31,9 +37,15 @@ function promptUser() {
             message: "Choose shapes color",
             name: "ShapeBackgroundColor", 
         },
-
-
     ])
+    .then ((answers) => {
+        if (answers.text.lenght > 3) {
+            console. log("Must enter a value more than 3 characters");
+            promptUser();
+        } else {
+            writToFile("./example/logo.svg", answers);
+        }
+    });
     
 }
 
