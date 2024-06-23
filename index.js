@@ -2,7 +2,7 @@
 const fs = require("fs");   //File module package
 const  {Triangle, Square, Circle} = require("./lib/shapes");  //Importing figures from shapes.js
 
-
+// Using dynamic import for inquirer
 (async () => {
     const inquirer = (await import('inquirer')).default;
 // Function writes the SVG file using user answers from inquirer prompts
@@ -12,7 +12,7 @@ function writeToFile(fileName, answers) {
     stringSvg += "<g>";
     stringSvg += `${answers.shape}`;
 
-    
+    // Conditional check takes users input from choices
     let shapeChoice;
     if (answers.shape === "Triangle") {
         shapeChoice = new Triangle();
@@ -24,21 +24,19 @@ function writeToFile(fileName, answers) {
         shapeChoice = new Circle();
         stringSvg += `<circle cx="150" cy="115" r="80" fill="${answers.shapeBackgroundColor}" />`;
     }
-
-    stringSvg += `<text x="150" y="125" font-size="40" text-anchor="middle" fill="${answers.textColor}">${answers.text}</text>`;
+    //Display text inside the shape
+    stringSvg += `<text x="150" y="125" font-size="50" text-anchor="middle" fill="${answers.textColor}">${answers.text}</text>`;
     // Close the SVG tags
     stringSvg += "</g>";        
     stringSvg += "</svg>";
 
-    
-   
+    fs.writeFileSync(fileName, stringSvg, (err) => {
+        err ? console.log(err) : console.log(`Generate ${fileName}`);
+    })
+}
   
 
-}
-
-
-
-
+//Function use inquirer. prompt the answers questions, and save the user input
 function promptUser() {
     inquirer
     .prompt([
@@ -74,7 +72,7 @@ function promptUser() {
     });
     
 }
-
+//start the prompt
 promptUser();
 
 
