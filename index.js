@@ -1,4 +1,5 @@
-const inquirer = require("inquirer");  //Inquirer node package
+const inquirer = import('inquirer');
+// const inquirer = require("inquirer");  //Inquirer node package
 const fs = require("fs");   //File module package
 const  {Triangle, Square, Circle} = require("./lib/shapes");  //Importing figures from shapes.js
 
@@ -8,6 +9,19 @@ function writeToFile(fileName, answers) {
     stringSvg = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">';
     stringSvg += "<g>";
     stringSvg += `${answers.shape}`;
+
+    
+    let shapeChoice;
+    if (answers.shape === "Triangle") {
+        shapeChoice = new Triangle();
+        stringSvg += `<polygon points="150, 18 244, 182 56, 182" fill="${answers.shapeColor}" />`;
+    } else if (answers.shape === "Square") {
+        shapeChoice = new Square();
+        stringSvg += `<rect x="73" y="40" width="160" height="160" fill="${answers.shapeColor}" />`;
+    } else  {
+        shapeChoice = new Circle();
+        stringSvg += `<circle cx="150" cy="115" r="80" fill="${answers.shapeColor}" />`;
+    }
 }
 
 
@@ -43,7 +57,7 @@ function promptUser() {
             console. log("Must enter a value more than 3 characters");
             promptUser();
         } else {
-            writToFile("./example/logo.svg", answers);
+            writeToFile("./example/logo.svg", answers);
         }
     });
     
